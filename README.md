@@ -79,30 +79,8 @@ Transform how you engage in virtual meetings with real-time transcription, intel
 ## 🎨 Screenshots
 
 ### Side Panel Interface
-```
-┌─────────────────────────────────────┐
-│ 🎙️ MeetingMind       🔴 Recording  │
-├─────────────────────────────────────┤
-│ 📝 LIVE TRANSCRIPT                  │
-│ ┌─────────────────────────────────┐ │
-│ │ [10:23] Speaker 1               │ │
-│ │ "Let's discuss the roadmap..."  │ │
-│ │                                 │ │
-│ │ [10:24] Speaker 2               │ │
-│ │ "I agree, we should prioritize" │ │
-│ └─────────────────────────────────┘ │
-├─────────────────────────────────────┤
-│ 📊 KEY MOMENTS                      │
-│ • 10:15 - Decision on architecture  │
-│ • 15:30 - Action items assigned     │
-├─────────────────────────────────────┤
-│ ✅ ACTION ITEMS                     │
-│ ☐ @John: Send proposal by Friday   │
-│ ☐ @Sarah: Review design docs        │
-├─────────────────────────────────────┤
-│ [Export TXT] [Export MD] [📧 Email] │
-└─────────────────────────────────────┘
-```
+- ![Side Panel Interface]](screenshot/01.11.2025_07.39.30_REC.png)
+- ![Meeting Mind features]](screenshot/01.11.2025_07.40.29_REC.png)
 
 ---
 
@@ -272,7 +250,7 @@ MIT License - See [LICENSE](LICENSE) file for details
 
 - **Issues**: [GitHub Issues](https://github.com/yourusername/meetingmind/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/yourusername/meetingmind/discussions)
-- **Email**: support@meetingmind.dev
+- **Email**: arnavrai141@gmail.com
 
 ---
 
