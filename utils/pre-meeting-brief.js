@@ -587,7 +587,5 @@ Keep it under 400 words and actionable.`;
   }
 }
 
-// Export for use in other modules
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = PreMeetingBriefGenerator;
-}
+// ES6 Export
+export { PreMeetingBriefGenerator };

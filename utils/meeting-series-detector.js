@@ -412,7 +412,5 @@ class MeetingSeriesDetector {
   }
 }
 
-// Export for use in other modules
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = MeetingSeriesDetector;
-}
+// ES6 Export
+export { MeetingSeriesDetector };

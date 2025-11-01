@@ -246,7 +246,6 @@ class SpeakerDetector {
   }
 }
 
-// Export for use in other scripts
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = SpeakerDetector;
-}
+// ES6 Export
+export { SpeakerDetector };
+export default SpeakerDetector;

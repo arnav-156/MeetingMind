@@ -660,7 +660,5 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// Export for use in sidepanel.js
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = PreMeetingBriefManager;
-}
+// ES6 Export
+export { PreMeetingBriefManager };
