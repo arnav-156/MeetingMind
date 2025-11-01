@@ -1,0 +1,3096 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MeetingMind</title>
+  
+  <!-- Animation System CSS -->
+  <link rel="stylesheet" href="../utils/animations.css">
+  
+  <style>
+    /* ============================================
+       DESIGN SYSTEM - CSS Variables
+       ============================================ */
+    
+    :root {
+      /* PRIMARY COLORS - Professional Purple/Indigo */
+      --primary-50:  #F5F3FF;
+      --primary-100: #EDE9FE;
+      --primary-200: #DDD6FE;
+      --primary-300: #C4B5FD;
+      --primary-400: #A78BFA;
+      --primary-500: #8B5CF6;
+      --primary-600: #7C3AED;
+      --primary-700: #6D28D9;
+      --primary-800: #5B21B6;
+      --primary-900: #4C1D95;
+
+      /* NEUTRAL COLORS */
+      --neutral-0:   #FFFFFF;
+      --neutral-50:  #F9FAFB;
+      --neutral-100: #F3F4F6;
+      --neutral-200: #E5E7EB;
+      --neutral-300: #D1D5DB;
+      --neutral-400: #9CA3AF;
+      --neutral-500: #6B7280;
+      --neutral-600: #4B5563;
+      --neutral-700: #374151;
+      --neutral-800: #1F2937;
+      --neutral-900: #111827;
+
+      /* SEMANTIC COLORS */
+      --success-50:  #ECFDF5;
+      --success-500: #10B981;
+      --success-600: #059669;
+      --warning-50:  #FFFBEB;
+      --warning-500: #F59E0B;
+      --warning-600: #D97706;
+      --error-50:   #FEF2F2;
+      --error-500:  #EF4444;
+      --error-600:  #DC2626;
+      --info-50:    #EFF6FF;
+      --info-500:   #3B82F6;
+      --info-600:   #2563EB;
+
+      /* TYPOGRAPHY */
+      --font-primary: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+      --text-xs:   0.75rem;
+      --text-sm:   0.875rem;
+      --text-base: 1rem;
+      --text-lg:   1.125rem;
+      --text-xl:   1.25rem;
+      --text-2xl:  1.5rem;
+      --font-regular: 400;
+      --font-medium:  500;
+      --font-semibold: 600;
+      --font-bold:    700;
+      --leading-tight:  1.25;
+      --leading-normal: 1.5;
+      --leading-relaxed: 1.75;
+
+      /* SPACING */
+      --space-1:  0.25rem;
+      --space-2:  0.5rem;
+      --space-3:  0.75rem;
+      --space-4:  1rem;
+      --space-5:  1.25rem;
+      --space-6:  1.5rem;
+      --space-8:  2rem;
+
+      /* BORDER RADIUS */
+      --radius-sm: 0.25rem;
+      --radius-md: 0.5rem;
+      --radius-lg: 0.75rem;
+      --radius-full: 9999px;
+
+      /* SHADOWS */
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+      /* TRANSITIONS */
+      --ease-standard: cubic-bezier(0.4, 0.0, 0.2, 1);
+      --duration-fast: 100ms;
+      --duration-normal: 200ms;
+      --duration-slow: 300ms;
+    }
+
+    /* ============================================
+       BASE STYLES & RESET
+       ============================================ */
+    
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: var(--font-primary);
+      font-size: var(--text-sm);
+      color: var(--neutral-900);
+      background: var(--neutral-50);
+      line-height: var(--leading-normal);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* ============================================
+       ACCESSIBILITY
+       ============================================ */
+    
+    /* Screen reader only content */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border-width: 0;
+    }
+
+    /* Focus indicators - visible for keyboard navigation */
+    *:focus {
+      outline: 2px solid var(--primary-500);
+      outline-offset: 2px;
+    }
+
+    /* Enhanced focus for buttons */
+    button:focus-visible,
+    a:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    textarea:focus-visible {
+      outline: 3px solid var(--primary-500);
+      outline-offset: 2px;
+      box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
+    }
+
+    /* High contrast mode support */
+    @media (prefers-contrast: high) {
+      * {
+        border-color: currentColor !important;
+      }
+      
+      button,
+      .btn {
+        border: 2px solid currentColor !important;
+      }
+    }
+
+    /* Reduced motion support */
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    /* ============================================
+       PRE-MEETING BRIEF CARD STYLES
+       ============================================ */
+    
+    .pre-meeting-brief-card {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%);
+      border: 1px solid #E0E7FF;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+                  0 2px 4px -1px rgba(0, 0, 0, 0.06),
+                  0 0 0 3px rgba(139, 92, 246, 0.1);
+      margin: 16px;
+      overflow: hidden;
+      animation: briefSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes briefSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .brief-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 20px;
+      border-bottom: 1px solid #E0E7FF;
+      background: linear-gradient(135deg, #F5F3FF 0%, #EDE9FE 100%);
+    }
+
+    .brief-icon {
+      font-size: 28px;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .brief-title-section {
+      flex: 1;
+    }
+
+    .brief-title {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 600;
+      color: #1F2937;
+      line-height: 1.3;
+    }
+
+    .brief-subtitle {
+      margin: 4px 0 0 0;
+      font-size: 13px;
+      color: #6B7280;
+      font-weight: 500;
+    }
+
+    #brief-countdown {
+      color: #7C3AED;
+      font-weight: 600;
+    }
+
+    .brief-close-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: none;
+      background: rgba(255, 255, 255, 0.6);
+      color: #6B7280;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .brief-close-btn:hover {
+      background: #FFFFFF;
+      color: #1F2937;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .brief-body {
+      padding: 20px;
+    }
+
+    /* Loading state */
+    .brief-loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      padding: 24px;
+      text-align: center;
+    }
+
+    .brief-loading .spinner {
+      width: 32px;
+      height: 32px;
+      border: 3px solid #E0E7FF;
+      border-top-color: #7C3AED;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .brief-loading p {
+      margin: 0;
+      font-size: 14px;
+      color: #6B7280;
+    }
+
+    /* Series info */
+    .brief-series-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .brief-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      background: #F5F3FF;
+      color: #6D28D9;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 6px;
+      border: 1px solid #E0E7FF;
+    }
+
+    .brief-count {
+      font-size: 13px;
+      color: #6B7280;
+      font-weight: 500;
+    }
+
+    /* Metrics */
+    .brief-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .brief-metric {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 12px;
+      background: #FFFFFF;
+      border: 1px solid #E5E7EB;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .metric-label {
+      font-size: 11px;
+      color: #6B7280;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .metric-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: #1F2937;
+      line-height: 1;
+    }
+
+    .metric-value-highlight {
+      color: #7C3AED;
+    }
+
+    /* AI Summary */
+    .brief-summary {
+      background: #F9FAFB;
+      border: 1px solid #E5E7EB;
+      border-radius: 8px;
+      padding: 14px;
+      margin-bottom: 14px;
+    }
+
+    .summary-heading {
+      margin: 0 0 10px 0;
+      font-size: 13px;
+      font-weight: 600;
+      color: #374151;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    #brief-summary-text {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #4B5563;
+    }
+
+    /* Quick insights */
+    .brief-insights {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .insight-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      background: #FFFFFF;
+      border: 1px solid #E5E7EB;
+      border-left: 3px solid #7C3AED;
+      border-radius: 6px;
+      font-size: 13px;
+      color: #374151;
+    }
+
+    .insight-icon {
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .insight-text {
+      flex: 1;
+      line-height: 1.4;
+    }
+
+    /* Expandable details */
+    .brief-details {
+      border-top: 1px solid #E5E7EB;
+      padding-top: 12px;
+    }
+
+    .brief-details-toggle {
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      color: #7C3AED;
+      padding: 8px 0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      user-select: none;
+      list-style: none;
+    }
+
+    .brief-details-toggle:hover {
+      color: #6D28D9;
+    }
+
+    .brief-details-toggle::marker {
+      content: '';
+    }
+
+    .brief-details-toggle::before {
+      content: '▶';
+      font-size: 10px;
+      transition: transform 0.2s;
+    }
+
+    .brief-details[open] .brief-details-toggle::before {
+      transform: rotate(90deg);
+    }
+
+    .brief-details-content {
+      padding-top: 16px;
+    }
+
+    .brief-section {
+      margin-bottom: 16px;
+    }
+
+    .section-heading {
+      margin: 0 0 10px 0;
+      font-size: 13px;
+      font-weight: 600;
+      color: #374151;
+    }
+
+    .action-items-compact {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .action-items-compact li {
+      padding: 8px 12px;
+      background: #F9FAFB;
+      border: 1px solid #E5E7EB;
+      border-radius: 6px;
+      margin-bottom: 8px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .action-items-compact .item-task {
+      color: #1F2937;
+      font-weight: 500;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .action-items-compact .item-meta {
+      color: #6B7280;
+      font-size: 12px;
+      display: flex;
+      gap: 12px;
+    }
+
+    .agenda-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      counter-reset: agenda-counter;
+    }
+
+    .agenda-list li {
+      padding: 10px 12px;
+      background: #F9FAFB;
+      border: 1px solid #E5E7EB;
+      border-radius: 6px;
+      margin-bottom: 8px;
+      position: relative;
+      padding-left: 38px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .agenda-list li::before {
+      counter-increment: agenda-counter;
+      content: counter(agenda-counter);
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      background: #7C3AED;
+      color: #FFFFFF;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .agenda-title {
+      color: #1F2937;
+      font-weight: 600;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .agenda-meta {
+      color: #6B7280;
+      font-size: 12px;
+    }
+
+    .engagement-info {
+      font-size: 13px;
+      line-height: 1.6;
+      color: #4B5563;
+    }
+
+    .engagement-info strong {
+      color: #1F2937;
+      font-weight: 600;
+    }
+
+    /* Error state */
+    .brief-error {
+      text-align: center;
+      padding: 24px;
+      color: #6B7280;
+      font-size: 14px;
+    }
+
+    /* Footer */
+    .brief-footer {
+      display: flex;
+      gap: 10px;
+      padding: 16px 20px;
+      border-top: 1px solid #E5E7EB;
+      background: #F9FAFB;
+    }
+
+    .btn-brief-action {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 50%, #6D28D9 100%);
+      color: #FFFFFF;
+      box-shadow: 0 2px 4px rgba(124, 58, 237, 0.2);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(124, 58, 237, 0.3);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-secondary {
+      background: #FFFFFF;
+      color: #6B7280;
+      border: 1px solid #E5E7EB;
+    }
+
+    .btn-secondary:hover {
+      background: #F9FAFB;
+      border-color: #D1D5DB;
+      color: #374151;
+    }
+
+    /* Dark mode support - Enterprise-grade with proper contrast */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        /* Background colors - Dark backgrounds */
+        --neutral-0:   #1F2937;   /* Main background */
+        --neutral-50:  #111827;   /* Darker areas */
+        --neutral-100: #374151;   /* Elevated surfaces */
+        --neutral-200: #4B5563;   /* Borders */
+        --neutral-300: #6B7280;   /* Dividers */
+        
+        /* Text colors - Light text for contrast */
+        --neutral-400: #9CA3AF;   /* Subtle text */
+        --neutral-500: #D1D5DB;   /* Secondary text */
+        --neutral-600: #E5E7EB;   /* Body text */
+        --neutral-700: #F3F4F6;   /* Headings */
+        --neutral-800: #F9FAFB;   /* High contrast text */
+        --neutral-900: #FFFFFF;   /* Maximum contrast */
+      }
+      
+      /* Buttons - High contrast in dark mode */
+      .btn,
+      button:not(.unstyled),
+      .control-btn {
+        color: white !important;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      
+      .btn-primary,
+      .start-btn {
+        background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-700) 100%) !important;
+        color: white !important;
+      }
+      
+      .btn-danger,
+      .stop-btn {
+        background: var(--error-600) !important;
+        color: white !important;
+      }
+      
+      .btn-secondary,
+      .pause-btn {
+        background: var(--warning-600) !important;
+        color: white !important;
+      }
+      
+      .btn-info,
+      .summarize-btn {
+        background: var(--info-600) !important;
+        color: white !important;
+      }
+      
+      .btn-export {
+        background: var(--neutral-100) !important;
+        color: var(--neutral-900) !important;
+        border: 1px solid var(--neutral-300) !important;
+      }
+      
+      .btn-export.primary {
+        background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-700) 100%) !important;
+        color: white !important;
+      }
+      
+      /* Dropdown - High contrast */
+      .meeting-type-dropdown,
+      select {
+        background: var(--neutral-100) !important;
+        color: var(--neutral-900) !important;
+        border-color: var(--neutral-300) !important;
+      }
+      
+      .meeting-type-dropdown option,
+      select option {
+        background: var(--neutral-100) !important;
+        color: var(--neutral-900) !important;
+      }
+      
+      /* Input fields */
+      input:not([type="checkbox"]):not([type="radio"]),
+      textarea {
+        background: var(--neutral-100) !important;
+        color: var(--neutral-900) !important;
+        border-color: var(--neutral-300) !important;
+      }
+      
+      /* Badges */
+      .badge {
+        background: var(--neutral-100) !important;
+        color: var(--neutral-900) !important;
+      }
+      
+      .status-badge {
+        background: var(--neutral-100) !important;
+        color: var(--neutral-900) !important;
+      }
+      
+      /* Cards */
+      .transcript-card,
+      .action-item,
+      .summary-card {
+        background: var(--neutral-100) !important;
+        color: var(--neutral-900) !important;
+      }
+      
+      /* Section backgrounds */
+      .section {
+        background: var(--neutral-0) !important;
+        border-color: var(--neutral-200) !important;
+      }
+      
+      .section-header {
+        background: var(--neutral-50) !important;
+      }
+      
+      .section-title {
+        color: var(--neutral-900) !important;
+      }
+      
+      /* ============================================
+         PRE-MEETING BRIEF CARD - Dark Mode
+         ============================================ */
+      .pre-meeting-brief-card {
+        background: linear-gradient(135deg, #374151 0%, #1F2937 100%) !important;
+        border-color: #4B5563 !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 
+                    0 2px 4px -1px rgba(0, 0, 0, 0.2),
+                    0 0 0 3px rgba(139, 92, 246, 0.2) !important;
+      }
+
+      .brief-header {
+        background: linear-gradient(135deg, #4B5563 0%, #374151 100%) !important;
+        border-color: #6B7280 !important;
+      }
+
+      .brief-title {
+        color: #F9FAFB !important;
+      }
+
+      .brief-subtitle {
+        color: #D1D5DB !important;
+      }
+
+      #brief-countdown {
+        color: #A78BFA !important;
+      }
+
+      .brief-close-btn {
+        background: rgba(0, 0, 0, 0.3) !important;
+        color: #D1D5DB !important;
+      }
+
+      .brief-close-btn:hover {
+        background: rgba(0, 0, 0, 0.5) !important;
+        color: #F9FAFB !important;
+      }
+
+      .brief-badge {
+        background: #4B5563 !important;
+        color: #A78BFA !important;
+        border-color: #6B7280 !important;
+      }
+
+      .brief-count {
+        color: #D1D5DB !important;
+      }
+
+      .brief-metric {
+        background: #4B5563 !important;
+        border-color: #6B7280 !important;
+      }
+
+      .metric-label {
+        color: #9CA3AF !important;
+      }
+
+      .metric-value {
+        color: #F9FAFB !important;
+      }
+
+      .metric-value-highlight {
+        color: #A78BFA !important;
+      }
+
+      .brief-summary {
+        background: #4B5563 !important;
+        border-color: #6B7280 !important;
+      }
+
+      .summary-heading {
+        color: #E5E7EB !important;
+      }
+
+      #brief-summary-text {
+        color: #D1D5DB !important;
+      }
+
+      .insight-item {
+        background: #4B5563 !important;
+        border-color: #6B7280 !important;
+        border-left-color: #A78BFA !important;
+        color: #E5E7EB !important;
+      }
+
+      .brief-details {
+        border-color: #6B7280 !important;
+      }
+
+      .brief-details-toggle {
+        color: #A78BFA !important;
+      }
+
+      .brief-details-toggle:hover {
+        color: #C4B5FD !important;
+      }
+
+      .section-heading {
+        color: #E5E7EB !important;
+      }
+
+      .action-items-compact li {
+        background: #4B5563 !important;
+        border-color: #6B7280 !important;
+      }
+
+      .action-items-compact .item-task {
+        color: #F9FAFB !important;
+      }
+
+      .action-items-compact .item-meta {
+        color: #9CA3AF !important;
+      }
+
+      .agenda-list li {
+        background: #4B5563 !important;
+        border-color: #6B7280 !important;
+      }
+
+      .agenda-list li::before {
+        background: #A78BFA !important;
+        color: #1F2937 !important;
+      }
+
+      .agenda-title {
+        color: #F9FAFB !important;
+      }
+
+      .agenda-meta {
+        color: #9CA3AF !important;
+      }
+
+      .engagement-info {
+        color: #D1D5DB !important;
+      }
+
+      .engagement-info strong {
+        color: #F9FAFB !important;
+      }
+
+      .brief-error {
+        color: #9CA3AF !important;
+      }
+
+      .brief-footer {
+        background: #374151 !important;
+        border-color: #6B7280 !important;
+      }
+
+      .btn-secondary {
+        background: #4B5563 !important;
+        color: #D1D5DB !important;
+        border-color: #6B7280 !important;
+      }
+
+      .btn-secondary:hover {
+        background: #374151 !important;
+        color: #F9FAFB !important;
+      }
+
+      .brief-loading p {
+        color: #D1D5DB !important;
+      }
+
+      .brief-loading .spinner {
+        border-color: #4B5563 !important;
+        border-top-color: #A78BFA !important;
+      }
+      
+      /* ============================================
+         MEETING IQ - Dark Mode High Contrast
+         ============================================ */
+      .meeting-iq-widget {
+        background: linear-gradient(135deg, #374151 0%, #1F2937 100%) !important;
+        border-color: #6B7280 !important;
+      }
+      
+      .iq-rating {
+        color: #F9FAFB !important;
+      }
+      
+      .iq-insight {
+        background: #374151 !important;
+        border-color: #4B5563 !important;
+        border-left-color: #8B5CF6 !important;
+        color: #E5E7EB !important;
+      }
+      
+      .iq-dimension {
+        background: #374151 !important;
+        border-color: #4B5563 !important;
+      }
+      
+      .iq-dimension-name {
+        color: #E5E7EB !important;
+      }
+      
+      .iq-dimension-score {
+        color: #A78BFA !important;
+      }
+      
+      .iq-dimension-bar {
+        background: #1F2937 !important;
+      }
+      
+      .iq-insight-item {
+        background: #374151 !important;
+        color: #FDE68A !important;
+      }
+      
+      .iq-insight-item.success {
+        background: #064E3B !important;
+        color: #A7F3D0 !important;
+      }
+      
+      .iq-insight-item.critical {
+        background: #7F1D1D !important;
+        color: #FECACA !important;
+      }
+    }
+
+    .container {
+      background: var(--neutral-0);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ============================================
+       HEADER
+       ============================================ */
+    
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--neutral-0);
+      border-bottom: 1px solid var(--neutral-200);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .header-content {
+      padding: var(--space-4);
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--space-3);
+    }
+
+    .app-logo {
+      font-size: var(--text-xl);
+      font-weight: var(--font-bold);
+      background: linear-gradient(135deg, var(--primary-500) 0%, var(--primary-600) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .header-indicators {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-1) var(--space-3);
+      border-radius: var(--radius-full);
+      font-size: var(--text-xs);
+      font-weight: var(--font-medium);
+      background: var(--neutral-100);
+      color: var(--neutral-700);
+      transition: all var(--duration-fast) var(--ease-standard);
+    }
+
+    .status-badge.recording {
+      background: var(--error-50);
+      color: var(--error-600);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: var(--radius-full);
+      background: var(--neutral-400);
+      transition: all var(--duration-fast);
+    }
+
+    .status-badge.recording .status-dot {
+      background: var(--error-500);
+      animation: pulse-dot 2s infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(1.1); }
+    }
+
+    .meeting-info-bar {
+      display: none;
+      background: linear-gradient(to right, var(--primary-50), var(--info-50));
+      border-top: 1px solid var(--primary-100);
+      padding: var(--space-3) var(--space-4);
+    }
+
+    .meeting-info-bar.active {
+      display: block;
+    }
+
+    .meeting-details {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .meeting-title {
+      font-size: var(--text-sm);
+      font-weight: var(--font-semibold);
+      color: var(--neutral-900);
+      margin-bottom: var(--space-1);
+    }
+
+    .meeting-meta {
+      font-size: var(--text-xs);
+      color: var(--neutral-600);
+    }
+
+    .meeting-badge {
+      display: inline-flex;
+      padding: var(--space-1) var(--space-2);
+      background: var(--neutral-0);
+      border-radius: var(--radius-full);
+      font-size: var(--text-xs);
+      color: var(--neutral-600);
+    }
+
+    /* Meeting Type Selector */
+    .meeting-type-selector {
+      margin-top: var(--space-4);
+      padding: var(--space-3);
+      background: linear-gradient(135deg, var(--primary-50) 0%, var(--info-50) 100%);
+      border: 1px solid var(--primary-200);
+      border-radius: var(--radius-lg);
+    }
+
+    .meeting-type-label {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-size: var(--text-sm);
+      font-weight: var(--font-semibold);
+      color: var(--neutral-700);
+      margin-bottom: var(--space-2);
+    }
+
+    .meeting-type-icon {
+      font-size: var(--text-lg);
+    }
+
+    .meeting-type-dropdown {
+      width: 100%;
+      padding: var(--space-3);
+      font-size: var(--text-sm);
+      font-family: var(--font-primary);
+      background: var(--neutral-0);
+      border: 2px solid var(--primary-300);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all var(--duration-fast) var(--ease-standard);
+    }
+
+    .meeting-type-dropdown:hover {
+      border-color: var(--primary-500);
+    }
+
+    .meeting-type-dropdown:focus {
+      outline: none;
+      border-color: var(--primary-600);
+      box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+    }
+
+    .meeting-type-hint {
+      margin-top: var(--space-2);
+      font-size: var(--text-xs);
+      color: var(--neutral-600);
+      font-style: italic;
+    }
+
+    /* Hide meeting type selector when recording */
+    .recording .meeting-type-selector {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    /* AI Meeting Type Suggestion Banner */
+    .meeting-type-suggestion {
+      margin-top: var(--space-3);
+      padding: var(--space-3);
+      background: linear-gradient(135deg, #FFF7ED 0%, #FEFCE8 100%);
+      border: 2px solid #FBBF24;
+      border-radius: var(--radius-lg);
+      animation: slideDown 0.3s ease-out;
+    }
+
+    .meeting-type-suggestion.hidden {
+      display: none;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeOut {
+      from {
+        opacity: 1;
+      }
+      to {
+        opacity: 0;
+      }
+    }
+
+    /* Highlighted action item (from notification click) */
+    .highlighted-item {
+      animation: highlightPulse 2s ease-in-out;
+      border: 2px solid var(--warning-500) !important;
+      background: var(--warning-50) !important;
+    }
+
+    @keyframes highlightPulse {
+      0%, 100% {
+        box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
+      }
+      50% {
+        box-shadow: 0 0 0 8px rgba(245, 158, 11, 0.3);
+      }
+    }
+
+    /* ============================================
+       MODAL STYLES
+       ============================================ */
+    
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1000;
+      animation: fadeIn var(--duration-normal) var(--ease-standard);
+    }
+
+    .modal.active {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(2px);
+    }
+
+    .modal-content {
+      position: relative;
+      background: var(--neutral-0);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      max-width: 500px;
+      width: 90%;
+      max-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      animation: slideUp var(--duration-normal) var(--ease-standard);
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--space-6);
+      border-bottom: 1px solid var(--neutral-200);
+    }
+
+    .modal-title {
+      font-size: var(--text-xl);
+      font-weight: var(--font-semibold);
+      color: var(--neutral-900);
+      margin: 0;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 28px;
+      color: var(--neutral-500);
+      cursor: pointer;
+      padding: 0;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-sm);
+      transition: all var(--duration-normal) var(--ease-standard);
+    }
+
+    .modal-close:hover {
+      background: var(--neutral-100);
+      color: var(--neutral-900);
+    }
+
+    .modal-body {
+      padding: var(--space-6);
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .modal-footer {
+      padding: var(--space-6);
+      border-top: 1px solid var(--neutral-200);
+      display: flex;
+      gap: var(--space-3);
+      justify-content: flex-end;
+    }
+
+    .modal-input {
+      width: 100%;
+      padding: var(--space-3);
+      border: 1px solid var(--neutral-300);
+      border-radius: var(--radius-md);
+      font-size: var(--text-base);
+      font-family: var(--font-primary);
+      transition: border-color var(--duration-normal) var(--ease-standard);
+    }
+
+    .modal-input:focus {
+      outline: none;
+      border-color: var(--primary-500);
+      box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+    }
+
+    .modal-textarea {
+      width: 100%;
+      min-height: 150px;
+      padding: var(--space-3);
+      border: 1px solid var(--neutral-300);
+      border-radius: var(--radius-md);
+      font-size: var(--text-sm);
+      font-family: var(--font-primary);
+      resize: vertical;
+      transition: border-color var(--duration-normal) var(--ease-standard);
+    }
+
+    .modal-textarea:focus {
+      outline: none;
+      border-color: var(--primary-500);
+      box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+    }
+
+    .modal-label {
+      display: block;
+      font-size: var(--text-sm);
+      font-weight: var(--font-medium);
+      color: var(--neutral-700);
+      margin-bottom: var(--space-2);
+    }
+
+    .modal-info {
+      display: flex;
+      align-items: start;
+      gap: var(--space-3);
+      padding: var(--space-4);
+      background: var(--info-50);
+      border-radius: var(--radius-md);
+      margin-top: var(--space-4);
+    }
+
+    .modal-info-icon {
+      font-size: var(--text-lg);
+    }
+
+    .modal-info-text {
+      flex: 1;
+      font-size: var(--text-sm);
+      color: var(--neutral-700);
+      line-height: var(--leading-normal);
+    }
+
+    .modal-link {
+      display: block;
+      width: 100%;
+      padding: var(--space-3);
+      background: var(--neutral-100);
+      border: 1px solid var(--neutral-300);
+      border-radius: var(--radius-md);
+      font-size: var(--text-sm);
+      font-family: monospace;
+      color: var(--primary-600);
+      word-break: break-all;
+      margin-top: var(--space-3);
+    }
+
+    /* ============================================
+       TOAST NOTIFICATION STYLES
+       ============================================ */
+    
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--neutral-900);
+      color: var(--neutral-0);
+      padding: var(--space-4) var(--space-6);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      font-size: var(--text-sm);
+      font-weight: var(--font-medium);
+      z-index: 2000;
+      opacity: 0;
+      transition: all var(--duration-normal) var(--ease-standard);
+      pointer-events: none;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+      pointer-events: auto;
+    }
+
+    .toast.success {
+      background: var(--success-600);
+    }
+
+    .toast.error {
+      background: var(--error-600);
+    }
+
+    .toast.warning {
+      background: var(--warning-600);
+    }
+
+    .toast.info {
+      background: var(--info-600);
+    }
+
+    #toast-icon {
+      font-size: var(--text-lg);
+    }
+
+    #toast-message {
+      flex: 1;
+    }
+
+    .suggestion-header {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      margin-bottom: var(--space-2);
+    }
+
+    .suggestion-icon {
+      font-size: var(--text-lg);
+    }
+
+    .suggestion-title {
+      flex: 1;
+      font-weight: var(--font-semibold);
+      font-size: var(--text-sm);
+      color: var(--neutral-800);
+    }
+
+    .suggestion-close {
+      background: none;
+      border: none;
+      font-size: var(--text-xl);
+      color: var(--neutral-500);
+      cursor: pointer;
+      padding: 0;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-sm);
+      transition: all 0.2s;
+    }
+
+    .suggestion-close:hover {
+      background: var(--neutral-200);
+      color: var(--neutral-800);
+    }
+
+    .suggestion-text {
+      font-size: var(--text-sm);
+      color: var(--neutral-700);
+      margin-bottom: var(--space-1);
+    }
+
+    .suggestion-confidence {
+      color: var(--warning-600);
+      font-weight: var(--font-semibold);
+      font-size: var(--text-xs);
+    }
+
+    .suggestion-reason {
+      font-size: var(--text-xs);
+      color: var(--neutral-600);
+      font-style: italic;
+      margin-bottom: var(--space-3);
+    }
+
+    .suggestion-actions {
+      display: flex;
+      gap: var(--space-2);
+    }
+
+    .btn-suggestion-accept,
+    .btn-suggestion-reject {
+      flex: 1;
+      padding: var(--space-2) var(--space-3);
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: var(--text-sm);
+      font-weight: var(--font-semibold);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-suggestion-accept {
+      background: var(--success-500);
+      color: white;
+    }
+
+    .btn-suggestion-accept:hover {
+      background: var(--success-600);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn-suggestion-reject {
+      background: var(--neutral-200);
+      color: var(--neutral-700);
+    }
+
+    .btn-suggestion-reject:hover {
+      background: var(--neutral-300);
+    }
+
+    /* ============================================
+       RECORDING CONTROL BUTTONS (REDESIGNED FROM SCRATCH)
+       ============================================ */
+    .control-buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+      align-items: center;
+    }
+    
+    .control-btn {
+      /* Base structure */
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 0 20px;
+      height: 44px;
+      
+      /* Typography */
+      font-family: var(--font-primary);
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+      
+      /* Styling */
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      
+      /* Animations */
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .control-btn:focus {
+      outline: 2px solid rgba(139, 92, 246, 0.5);
+      outline-offset: 2px;
+    }
+    
+    .control-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+    
+    .control-btn .btn-icon {
+      font-size: 18px;
+      line-height: 1;
+      filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+    }
+    
+    .control-btn .btn-text {
+      font-weight: 600;
+    }
+    
+    /* ============================================
+       START BUTTON - Purple/Violet
+       ============================================ */
+    .start-btn {
+      background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 50%, #6D28D9 100%);
+      color: #FFFFFF;
+      box-shadow: 
+        0 4px 12px rgba(139, 92, 246, 0.3),
+        0 2px 4px rgba(0, 0, 0, 0.1);
+      min-width: 160px;
+    }
+    
+    .start-btn:hover:not(:disabled) {
+      background: linear-gradient(135deg, #7C3AED 0%, #6D28D9 50%, #5B21B6 100%);
+      box-shadow: 
+        0 6px 16px rgba(139, 92, 246, 0.4),
+        0 3px 6px rgba(0, 0, 0, 0.15);
+      transform: translateY(-2px);
+    }
+    
+    .start-btn:active:not(:disabled) {
+      transform: translateY(0) scale(0.98);
+      box-shadow: 
+        0 2px 8px rgba(139, 92, 246, 0.3),
+        0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* ============================================
+       STOP BUTTON - Red
+       ============================================ */
+    .stop-btn {
+      background: linear-gradient(135deg, #EF4444 0%, #DC2626 50%, #B91C1C 100%);
+      color: #FFFFFF;
+      box-shadow: 
+        0 4px 12px rgba(239, 68, 68, 0.3),
+        0 2px 4px rgba(0, 0, 0, 0.1);
+      min-width: 160px;
+    }
+    
+    .stop-btn:hover:not(:disabled) {
+      background: linear-gradient(135deg, #DC2626 0%, #B91C1C 50%, #991B1B 100%);
+      box-shadow: 
+        0 6px 16px rgba(239, 68, 68, 0.4),
+        0 3px 6px rgba(0, 0, 0, 0.15);
+      transform: translateY(-2px);
+    }
+    
+    .stop-btn:active:not(:disabled) {
+      transform: translateY(0) scale(0.98);
+      box-shadow: 
+        0 2px 8px rgba(239, 68, 68, 0.3),
+        0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* ============================================
+       PAUSE BUTTON - Orange/Amber
+       ============================================ */
+    .pause-btn {
+      background: linear-gradient(135deg, #F59E0B 0%, #D97706 50%, #B45309 100%);
+      color: #FFFFFF;
+      box-shadow: 
+        0 3px 10px rgba(245, 158, 11, 0.3),
+        0 2px 4px rgba(0, 0, 0, 0.1);
+      padding: 0 16px;
+      min-width: 48px;
+    }
+    
+    .pause-btn:hover:not(:disabled) {
+      background: linear-gradient(135deg, #D97706 0%, #B45309 50%, #92400E 100%);
+      box-shadow: 
+        0 4px 12px rgba(245, 158, 11, 0.4),
+        0 2px 4px rgba(0, 0, 0, 0.15);
+      transform: translateY(-2px);
+    }
+    
+    .pause-btn:active:not(:disabled) {
+      transform: translateY(0) scale(0.98);
+    }
+    
+    /* ============================================
+       SUMMARIZE BUTTON - Blue
+       ============================================ */
+    .summarize-btn {
+      background: linear-gradient(135deg, #3B82F6 0%, #2563EB 50%, #1D4ED8 100%);
+      color: #FFFFFF;
+      box-shadow: 
+        0 3px 10px rgba(59, 130, 246, 0.3),
+        0 2px 4px rgba(0, 0, 0, 0.1);
+      padding: 0 16px;
+      min-width: 48px;
+    }
+    
+    .summarize-btn:hover:not(:disabled) {
+      background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 50%, #1E40AF 100%);
+      box-shadow: 
+        0 4px 12px rgba(59, 130, 246, 0.4),
+        0 2px 4px rgba(0, 0, 0, 0.15);
+      transform: translateY(-2px);
+    }
+    
+    .summarize-btn:active:not(:disabled) {
+      transform: translateY(0) scale(0.98);
+    }
+    
+    /* ============================================
+       LOADING STATE
+       ============================================ */
+    .control-btn.loading {
+      pointer-events: none;
+      position: relative;
+    }
+    
+    .control-btn.loading::after {
+      content: '';
+      position: absolute;
+      right: 12px;
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spinner-rotate 0.6s linear infinite;
+    }
+    
+    @keyframes spinner-rotate {
+      to { transform: rotate(360deg); }
+    }
+    
+    /* ============================================
+       RIPPLE EFFECT
+       ============================================ */
+    .control-btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.5s, height 0.5s;
+    }
+    
+    .control-btn:active::before {
+      width: 300px;
+      height: 300px;
+      transition: width 0s, height 0s;
+    }
+
+    /* ============================================
+       CONTENT SECTIONS
+       ============================================ */
+    
+    .content-area {
+      flex: 1;
+      overflow-y: auto;
+      padding: var(--space-4);
+    }
+
+    .section {
+      background: var(--neutral-0);
+      border: 1px solid var(--neutral-200);
+      border-radius: var(--radius-lg);
+      margin-bottom: var(--space-4);
+      overflow: hidden;
+    }
+
+    .section-header {
+      padding: var(--space-3) var(--space-4);
+      background: var(--neutral-50);
+      border-bottom: 1px solid var(--neutral-200);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .section-title {
+      font-size: var(--text-base);
+      font-weight: var(--font-semibold);
+      color: var(--neutral-900);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .section-body {
+      padding: var(--space-4);
+    }
+
+    /* ============================================
+       TRANSCRIPT CARDS
+       ============================================ */
+    
+    .transcript-card {
+      background: var(--neutral-50);
+      border-left: 3px solid transparent;
+      border-radius: var(--radius-md);
+      padding: var(--space-3) var(--space-4);
+      margin-bottom: var(--space-2);
+      transition: all var(--duration-fast) var(--ease-standard);
+      animation: slideIn var(--duration-slow) var(--ease-standard);
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .transcript-card:hover {
+      background: var(--neutral-0);
+      box-shadow: var(--shadow-sm);
+      transform: translateY(-1px);
+    }
+
+    .transcript-card.latest {
+      border-left-color: var(--primary-500);
+      background: var(--neutral-0);
+    }
+
+    .transcript-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--space-2);
+    }
+
+    .transcript-meta {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .transcript-speaker {
+      font-size: var(--text-sm);
+      font-weight: var(--font-semibold);
+      color: var(--primary-600);
+    }
+
+    .transcript-time {
+      font-size: var(--text-xs);
+      color: var(--neutral-500);
+    }
+
+    .transcript-text {
+      font-size: var(--text-sm);
+      color: var(--neutral-800);
+      line-height: var(--leading-relaxed);
+      white-space: pre-wrap;
+    }
+
+    /* ============================================
+       SUMMARY & ACTION CARDS
+       ============================================ */
+    
+    .summary-card {
+      background: var(--neutral-0);
+      border: 1px solid var(--neutral-200);
+      border-radius: var(--radius-lg);
+      padding: var(--space-4);
+      margin-bottom: var(--space-3);
+      transition: all var(--duration-normal) var(--ease-standard);
+    }
+
+    .summary-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+
+    .action-item {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-3);
+      padding: var(--space-3);
+      background: var(--neutral-50);
+      border-radius: var(--radius-md);
+      margin-bottom: var(--space-2);
+      transition: all var(--duration-fast) var(--ease-standard);
+    }
+
+    .action-item:hover {
+      background: var(--neutral-0);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* ============================================
+       BADGES & INDICATORS
+       ============================================ */
+    
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: var(--space-1) var(--space-2);
+      border-radius: var(--radius-sm);
+      font-size: var(--text-xs);
+      font-weight: var(--font-medium);
+    }
+
+    .badge-primary {
+      background: var(--primary-100);
+      color: var(--primary-700);
+    }
+
+    .badge-success {
+      background: var(--success-50);
+      color: var(--success-600);
+    }
+
+    .badge-info {
+      background: var(--info-50);
+      color: var(--info-600);
+    }
+
+    /* ============================================
+       ANALYTICS
+       ============================================ */
+    
+    .analytics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-3);
+      margin-bottom: var(--space-4);
+    }
+
+    .stat-card {
+      text-align: center;
+      padding: var(--space-3);
+      border-radius: var(--radius-md);
+    }
+
+    .stat-card.purple {
+      background: var(--primary-50);
+    }
+
+    .stat-card.blue {
+      background: var(--info-50);
+    }
+
+    .stat-card.green {
+      background: var(--success-50);
+    }
+
+    .stat-value {
+      font-size: var(--text-2xl);
+      font-weight: var(--font-bold);
+      margin-bottom: var(--space-1);
+    }
+
+    .stat-card.purple .stat-value {
+      color: var(--primary-700);
+    }
+
+    .stat-card.blue .stat-value {
+      color: var(--info-600);
+    }
+
+    .stat-card.green .stat-value {
+      color: var(--success-600);
+    }
+
+    .stat-label {
+      font-size: var(--text-xs);
+      color: var(--neutral-600);
+    }
+
+    .speaker-bar {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      margin-bottom: var(--space-2);
+    }
+
+    .speaker-name {
+      font-size: var(--text-xs);
+      font-weight: var(--font-medium);
+      width: 80px;
+      flex-shrink: 0;
+    }
+
+    .speaker-progress {
+      flex: 1;
+      height: 8px;
+      background: var(--neutral-100);
+      border-radius: var(--radius-full);
+      overflow: hidden;
+    }
+
+    .speaker-progress-fill {
+      height: 100%;
+      background: var(--primary-500);
+      border-radius: var(--radius-full);
+      transition: width var(--duration-slow) var(--ease-standard);
+    }
+
+    .speaker-percentage {
+      font-size: var(--text-xs);
+      color: var(--neutral-600);
+      width: 40px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .word-cloud {
+      padding: var(--space-3);
+      background: var(--neutral-50);
+      border-radius: var(--radius-md);
+      min-height: 128px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+      align-items: center;
+      justify-content: center;
+    }
+
+    .word-cloud-item {
+      display: inline-block;
+      padding: var(--space-1) var(--space-2);
+      transition: all var(--duration-fast) var(--ease-standard);
+    }
+
+    .word-cloud-item:hover {
+      transform: scale(1.1);
+    }
+
+    /* ============================================
+       EMPTY STATES & LOADING
+       ============================================ */
+    
+    .empty-state {
+      text-align: center;
+      padding: var(--space-8) var(--space-4);
+      color: var(--neutral-400);
+    }
+
+    .empty-state p {
+      font-size: var(--text-sm);
+    }
+
+    .loading-spinner {
+      border: 3px solid var(--neutral-200);
+      border-top: 3px solid var(--primary-500);
+      border-radius: var(--radius-full);
+      width: 24px;
+      height: 24px;
+      animation: spin 1s linear infinite;
+      display: inline-block;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .skeleton {
+      background: linear-gradient(90deg, var(--neutral-200) 25%, var(--neutral-100) 50%, var(--neutral-200) 75%);
+      background-size: 200% 100%;
+      animation: loading 1.5s infinite;
+      border-radius: var(--radius-sm);
+    }
+
+    @keyframes loading {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* ============================================
+       EXPORT GRID
+       ============================================ */
+    
+    .export-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-2);
+    }
+
+    .btn-export {
+      padding: var(--space-2) var(--space-3);
+      background: var(--neutral-100);
+      color: var(--neutral-700);
+      border-radius: var(--radius-md);
+      font-size: var(--text-sm);
+      font-weight: var(--font-medium);
+      border: none;
+      cursor: pointer;
+      transition: all var(--duration-fast) var(--ease-standard);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+    }
+
+    .btn-export:hover:not(:disabled) {
+      background: var(--neutral-200);
+    }
+
+    .btn-export:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-export.primary {
+      background: linear-gradient(135deg, var(--primary-500) 0%, var(--primary-600) 100%);
+      color: white;
+    }
+
+    .btn-export.primary:hover:not(:disabled) {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-1px);
+    }
+
+    /* ============================================
+       UTILITY CLASSES
+       ============================================ */
+    
+    .hidden { display: none !important; }
+    .flex { display: flex; }
+    .items-center { align-items: center; }
+    .justify-between { justify-content: space-between; }
+    .gap-2 { gap: var(--space-2); }
+    .gap-3 { gap: var(--space-3); }
+    .space-y-2 > * + * { margin-top: var(--space-2); }
+    .space-y-4 > * + * { margin-top: var(--space-4); }
+    .scroll-smooth { scroll-behavior: smooth; }
+
+    #transcript-container {
+      max-height: calc(100vh - 400px);
+      overflow-y: auto;
+    }
+
+    /* ============================================
+       NOTIFICATIONS (Toast)
+       ============================================ */
+    
+    .mm-notification {
+      position: fixed;
+      top: var(--space-4);
+      right: var(--space-4);
+      z-index: 1000;
+      padding: var(--space-3) var(--space-4);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+      color: white;
+      font-size: var(--text-sm);
+      font-weight: var(--font-medium);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      animation: slideInRight var(--duration-slow) var(--ease-standard);
+      transition: all var(--duration-normal) var(--ease-standard);
+      max-width: 320px;
+    }
+
+    @keyframes slideInRight {
+      from {
+        opacity: 0;
+        transform: translateX(100px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .mm-notification.success {
+      background: var(--success-500);
+    }
+
+    .mm-notification.error {
+      background: var(--error-500);
+    }
+
+    .mm-notification.warning {
+      background: var(--warning-500);
+    }
+
+    .mm-notification.info {
+      background: var(--info-500);
+    }
+
+    .mm-notification button {
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-size: var(--text-lg);
+      padding: 0;
+      margin-left: var(--space-2);
+      opacity: 0.8;
+      transition: opacity var(--duration-fast);
+    }
+
+    .mm-notification button:hover {
+      opacity: 1;
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--neutral-100);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--neutral-300);
+      border-radius: var(--radius-sm);
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--neutral-400);
+    }
+
+    /* ============================================
+       MEETING IQ STYLES
+       ============================================ */
+    
+    .meeting-type-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-1) var(--space-3);
+      background: linear-gradient(135deg, var(--primary-500) 0%, var(--info-500) 100%);
+      color: var(--neutral-0);
+      border-radius: var(--radius-full);
+      font-size: var(--text-xs);
+      font-weight: var(--font-semibold);
+      margin-left: auto;
+      margin-right: var(--space-2);
+    }
+    
+    /* ============================================
+       MEETING IQ WIDGET - Enhanced Contrast & Readability
+       ============================================ */
+    .meeting-iq-widget {
+      padding: var(--space-4);
+      background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%);
+      border-radius: var(--radius-lg);
+      border: 2px solid var(--primary-200);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+      transition: all var(--duration-normal) var(--ease-standard);
+    }
+
+    .meeting-iq-widget:hover {
+      box-shadow: var(--shadow-md);
+      border-color: var(--primary-300);
+      transform: translateY(-1px);
+    }
+
+    .iq-score-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-3);
+      margin-bottom: var(--space-3);
+    }
+
+    .iq-score {
+      font-size: 64px;
+      font-weight: var(--font-black);
+      line-height: 1;
+      background: linear-gradient(135deg, #7C3AED, #2563EB);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: pulseScore var(--duration-slow) ease-in-out infinite;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    @keyframes pulseScore {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .iq-score.excellent { 
+      background: linear-gradient(135deg, #059669, #10B981); 
+      -webkit-background-clip: text; 
+      -webkit-text-fill-color: transparent; 
+      background-clip: text; 
+    }
+    
+    .iq-score.good { 
+      background: linear-gradient(135deg, #2563EB, #3B82F6); 
+      -webkit-background-clip: text; 
+      -webkit-text-fill-color: transparent; 
+      background-clip: text; 
+    }
+    
+    .iq-score.needs-work { 
+      background: linear-gradient(135deg, #D97706, #F59E0B); 
+      -webkit-background-clip: text; 
+      -webkit-text-fill-color: transparent; 
+      background-clip: text; 
+    }
+    
+    .iq-score.poor { 
+      background: linear-gradient(135deg, #DC2626, #EF4444); 
+      -webkit-background-clip: text; 
+      -webkit-text-fill-color: transparent; 
+      background-clip: text; 
+    }
+
+    .iq-trend {
+      font-size: var(--text-xl);
+      font-weight: var(--font-bold);
+      padding: var(--space-1) var(--space-2);
+      border-radius: var(--radius-full);
+      background: white;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .iq-trend.positive { color: #059669; }
+    .iq-trend.negative { color: #DC2626; }
+    .iq-trend.neutral { color: #6B7280; }
+
+    .iq-rating {
+      text-align: center;
+      font-size: var(--text-lg);
+      font-weight: var(--font-semibold);
+      color: #1F2937;
+      margin-bottom: var(--space-3);
+    }
+
+    .iq-progress-bar {
+      height: 8px;
+      background: #E5E7EB;
+      border-radius: var(--radius-full);
+      overflow: hidden;
+      margin-bottom: var(--space-3);
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+
+    .iq-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #7C3AED, #2563EB);
+      border-radius: var(--radius-full);
+      transition: width var(--duration-slow) var(--ease-spring);
+      box-shadow: 0 1px 2px rgba(124, 58, 237, 0.3);
+    }
+
+    .iq-progress-fill.excellent { 
+      background: linear-gradient(90deg, #059669, #10B981); 
+      box-shadow: 0 1px 2px rgba(5, 150, 105, 0.3);
+    }
+    
+    .iq-progress-fill.good { 
+      background: linear-gradient(90deg, #2563EB, #3B82F6); 
+      box-shadow: 0 1px 2px rgba(37, 99, 235, 0.3);
+    }
+    
+    .iq-progress-fill.needs-work { 
+      background: linear-gradient(90deg, #D97706, #F59E0B); 
+      box-shadow: 0 1px 2px rgba(217, 119, 6, 0.3);
+    }
+    
+    .iq-progress-fill.poor { 
+      background: linear-gradient(90deg, #DC2626, #EF4444); 
+      box-shadow: 0 1px 2px rgba(220, 38, 38, 0.3);
+    }
+
+    .iq-insight {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-2);
+      padding: var(--space-3);
+      background: #FFFFFF;
+      border-radius: var(--radius-md);
+      border: 1px solid #E5E7EB;
+      border-left: 4px solid #7C3AED;
+      font-size: var(--text-sm);
+      color: #374151;
+      line-height: 1.5;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+
+    .insight-icon {
+      font-size: var(--text-lg);
+      flex-shrink: 0;
+    }
+
+    /* Detailed Breakdown */
+    .meeting-iq-details {
+      margin-top: var(--space-4);
+      padding-top: var(--space-4);
+      border-top: 2px solid var(--neutral-200);
+    }
+
+    .iq-dimensions-grid {
+      display: grid;
+      gap: var(--space-3);
+    }
+
+    .iq-dimension {
+      padding: var(--space-3);
+      background: #FFFFFF;
+      border-radius: var(--radius-md);
+      border: 1px solid #E5E7EB;
+      transition: all var(--duration-normal);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+
+    .iq-dimension:hover {
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border-color: #C4B5FD;
+      transform: translateY(-1px);
+    }
+
+    .iq-dimension-header {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      margin-bottom: var(--space-2);
+    }
+
+    .iq-dimension-icon {
+      font-size: var(--text-lg);
+    }
+
+    .iq-dimension-name {
+      flex: 1;
+      font-size: var(--text-sm);
+      font-weight: var(--font-medium);
+      color: #374151;
+    }
+
+    .iq-dimension-score {
+      font-size: var(--text-lg);
+      font-weight: var(--font-bold);
+      color: #7C3AED;
+    }
+
+    .iq-dimension-bar {
+      height: 6px;
+      background: #F3F4F6;
+      border-radius: var(--radius-full);
+      overflow: hidden;
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+
+    .iq-dimension-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #8B5CF6, #7C3AED);
+      border-radius: var(--radius-full);
+      transition: width var(--duration-slow) var(--ease-spring);
+      box-shadow: 0 1px 2px rgba(124, 58, 237, 0.3);
+    }
+
+    .iq-insights-list {
+      margin-top: var(--space-4);
+      display: grid;
+      gap: var(--space-2);
+    }
+
+    .iq-insight-item {
+      padding: var(--space-2) var(--space-3);
+      background: #FFFBEB;
+      border-left: 3px solid #F59E0B;
+      border-radius: var(--radius-sm);
+      font-size: var(--text-xs);
+      color: #78350F;
+      font-weight: 500;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+
+    .iq-insight-item.success {
+      background: #ECFDF5;
+      border-color: #10B981;
+      color: #065F46;
+    }
+
+    .iq-insight-item.critical {
+      background: #FEF2F2;
+      border-color: #EF4444;
+      color: #991B1B;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    
+    <!-- HEADER -->
+    <header class="header">
+      <div class="header-content">
+        <div class="header-top">
+          <h1 class="app-logo">MeetingMind</h1>
+          <div class="header-indicators">
+            <div id="ai-status-indicator" class="status-badge" title="AI Status">
+              <span id="ai-status-dot" class="status-dot"></span>
+              <span id="ai-status-text">Checking...</span>
+            </div>
+            <div id="status-indicator" class="status-badge">
+              <span class="status-dot" id="status-dot"></span>
+              <span id="status-text">Idle</span>
+            </div>
+          </div>
+        </div>
+
+        <div id="meeting-info" class="meeting-info-bar">
+          <div class="meeting-details">
+            <div>
+              <div class="meeting-title" id="meeting-title">Current Meeting</div>
+              <div class="meeting-meta">
+                <span id="meeting-duration">0:00</span>
+              </div>
+            </div>
+            <span class="meeting-badge" id="meeting-platform">Platform</span>
+          </div>
+        </div>
+
+        <!-- Meeting Type Selector -->
+        <div class="meeting-type-selector" id="meeting-type-selector">
+          <label for="meeting-type-dropdown" class="meeting-type-label">
+            <span class="meeting-type-icon">🎯</span>
+            <span>Meeting Type:</span>
+          </label>
+          <select id="meeting-type-dropdown" class="meeting-type-dropdown">
+            <option value="GENERAL" selected>📋 General Meeting</option>
+            <option value="STANDUP">☀️ Daily Standup</option>
+            <option value="BRAINSTORM">💡 Brainstorming</option>
+            <option value="DECISION_MAKING">⚖️ Decision Meeting</option>
+            <option value="ONE_ON_ONE">🤝 1:1 / Coaching</option>
+            <option value="PLANNING">📅 Planning / Strategy</option>
+            <option value="REVIEW">📊 Review / Demo</option>
+            <option value="PROBLEM_SOLVING">🔧 Problem Solving</option>
+            <option value="CLIENT_MEETING">🤝 Client Meeting</option>
+          </select>
+          <div class="meeting-type-hint" id="meeting-type-hint">
+            Balanced scoring across all dimensions
+          </div>
+        </div>
+
+        <!-- AI Meeting Type Suggestion Banner (hidden by default) -->
+        <div class="meeting-type-suggestion hidden" id="meeting-type-suggestion">
+          <div class="suggestion-header">
+            <span class="suggestion-icon">✨</span>
+            <span class="suggestion-title">AI Detected Meeting Type</span>
+            <button class="suggestion-close" id="suggestion-close" title="Dismiss">×</button>
+          </div>
+          <div class="suggestion-body">
+            <div class="suggestion-text">
+              This looks like a <strong id="suggested-type-name">Standup</strong>
+              <span class="suggestion-confidence" id="suggestion-confidence">(85% confident)</span>
+            </div>
+            <div class="suggestion-reason" id="suggestion-reason">
+              Based on: update patterns detected
+            </div>
+            <div class="suggestion-actions">
+              <button id="accept-suggestion" class="btn-suggestion-accept">
+                ✓ Switch to this type
+              </button>
+              <button id="reject-suggestion" class="btn-suggestion-reject">
+                Keep current
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============================================
+             RECORDING CONTROL BUTTONS (REDESIGNED)
+             ============================================ -->
+        <div class="control-buttons" role="group" aria-label="Recording controls">
+          <!-- Start Recording Button (Purple) -->
+          <button 
+            id="start-btn" 
+            class="control-btn start-btn" 
+            aria-label="Start recording meeting"
+            aria-describedby="start-btn-hint">
+            <span class="btn-icon" aria-hidden="true">🎙️</span>
+            <span class="btn-text">Start Recording</span>
+          </button>
+          
+          <!-- Stop Recording Button (Red) -->
+          <button 
+            id="stop-btn" 
+            class="control-btn stop-btn hidden" 
+            aria-label="Stop recording meeting"
+            aria-describedby="stop-btn-hint">
+            <span class="btn-icon" aria-hidden="true">🛑</span>
+            <span class="btn-text">Stop</span>
+          </button>
+          
+          <!-- Pause Button (Orange) -->
+          <button 
+            id="pause-btn" 
+            class="control-btn pause-btn hidden" 
+            aria-label="Pause or resume recording"
+            aria-describedby="pause-btn-hint">
+            <span class="btn-icon" aria-hidden="true">⏸️</span>
+          </button>
+          
+          <!-- Summarize Button (Blue) -->
+          <button 
+            id="summarize-btn" 
+            class="control-btn summarize-btn hidden" 
+            aria-label="Generate meeting summary"
+            aria-describedby="summarize-btn-hint">
+            <span class="btn-icon" aria-hidden="true">📝</span>
+          </button>
+        </div>
+        
+        <!-- Screen reader hints -->
+        <div class="sr-only">
+          <span id="start-btn-hint">Press Enter or Space to start recording. Keyboard shortcut: Ctrl+R</span>
+          <span id="stop-btn-hint">Press Enter or Space to stop recording. Keyboard shortcut: Ctrl+R</span>
+          <span id="pause-btn-hint">Press Enter or Space to toggle pause. Keyboard shortcut: Ctrl+P</span>
+          <span id="summarize-btn-hint">Press Enter or Space to generate summary. Keyboard shortcut: Ctrl+S</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- PRE-MEETING BRIEF CARD (Appears 5 min before meeting) -->
+    <div id="pre-meeting-brief-card" class="pre-meeting-brief-card" style="display: none;" role="dialog" aria-labelledby="brief-title" aria-describedby="brief-content">
+      <div class="brief-header">
+        <div class="brief-icon">📋</div>
+        <div class="brief-title-section">
+          <h3 id="brief-title" class="brief-title">Pre-Meeting Brief Ready</h3>
+          <p class="brief-subtitle">Your meeting starts in <span id="brief-countdown">5 minutes</span></p>
+        </div>
+        <button id="brief-dismiss" class="brief-close-btn" aria-label="Dismiss brief">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M12 4L4 12M4 4l8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <div id="brief-content" class="brief-body">
+        <!-- Loading state -->
+        <div id="brief-loading" class="brief-loading">
+          <div class="spinner"></div>
+          <p>Analyzing previous meetings...</p>
+        </div>
+
+        <!-- Content loaded state -->
+        <div id="brief-loaded" class="brief-loaded" style="display: none;">
+          <!-- Series info -->
+          <div class="brief-series-info">
+            <span class="brief-badge" id="brief-series-badge">Weekly Standup</span>
+            <span class="brief-count" id="brief-meeting-count">Meeting #12</span>
+          </div>
+
+          <!-- Key metrics -->
+          <div class="brief-metrics">
+            <div class="brief-metric">
+              <span class="metric-label">Last IQ Score</span>
+              <span class="metric-value" id="brief-last-iq">85</span>
+            </div>
+            <div class="brief-metric">
+              <span class="metric-label">Typical Duration</span>
+              <span class="metric-value" id="brief-duration">23 min</span>
+            </div>
+            <div class="brief-metric">
+              <span class="metric-label">Open Items</span>
+              <span class="metric-value metric-value-highlight" id="brief-open-items">3</span>
+            </div>
+          </div>
+
+          <!-- AI Summary -->
+          <div class="brief-summary" id="brief-ai-summary">
+            <h4 class="summary-heading">Context from Last Meeting</h4>
+            <p id="brief-summary-text">Summary will appear here...</p>
+          </div>
+
+          <!-- Quick insights -->
+          <div class="brief-insights">
+            <div class="insight-item" id="brief-focus-areas">
+              <span class="insight-icon">🎯</span>
+              <span class="insight-text">3 action items need follow-up</span>
+            </div>
+            <div class="insight-item" id="brief-patterns">
+              <span class="insight-icon">📊</span>
+              <span class="insight-text">Recurring topics: blockers, sprint planning</span>
+            </div>
+          </div>
+
+          <!-- Expandable details -->
+          <details class="brief-details">
+            <summary class="brief-details-toggle">View Full Brief</summary>
+            <div class="brief-details-content">
+              <!-- Open action items -->
+              <div class="brief-section">
+                <h5 class="section-heading">🔖 Open Action Items</h5>
+                <ul id="brief-action-items-list" class="action-items-compact">
+                  <!-- Will be populated dynamically -->
+                </ul>
+              </div>
+
+              <!-- Suggested agenda -->
+              <div class="brief-section">
+                <h5 class="section-heading">📝 Suggested Agenda</h5>
+                <ol id="brief-agenda-list" class="agenda-list">
+                  <!-- Will be populated dynamically -->
+                </ol>
+              </div>
+
+              <!-- Engagement patterns -->
+              <div class="brief-section">
+                <h5 class="section-heading">👥 Engagement Insights</h5>
+                <div id="brief-engagement" class="engagement-info">
+                  <!-- Will be populated dynamically -->
+                </div>
+              </div>
+            </div>
+          </details>
+        </div>
+
+        <!-- Error state -->
+        <div id="brief-error" class="brief-error" style="display: none;">
+          <p>Could not generate brief. This may be a new meeting series.</p>
+        </div>
+      </div>
+
+      <div class="brief-footer">
+        <button id="brief-start-with-context" class="btn-primary btn-brief-action">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="margin-right: 8px;">
+            <path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          Start with this Context
+        </button>
+        <button id="brief-view-later" class="btn-secondary btn-brief-action">
+          View Later
+        </button>
+      </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="content-area">
+      
+      <!-- TRANSCRIPT SECTION -->
+      <section class="section" aria-labelledby="transcript-title">
+        <div class="section-header">
+          <h2 id="transcript-title" class="section-title">
+            <span aria-hidden="true">📝</span>
+            <span>Live Transcript</span>
+          </h2>
+          <button id="auto-scroll-toggle" class="badge badge-info" 
+                  style="cursor: pointer;"
+                  aria-label="Toggle automatic scrolling"
+                  aria-pressed="true"
+                  role="switch">
+            Auto-scroll: ON
+          </button>
+        </div>
+        <div class="section-body">
+          <div id="transcript-container" class="scroll-smooth">
+            <div id="transcript-list" role="log" aria-live="polite" aria-atomic="false">
+              <div class="empty-state">
+                <p>Transcript will appear here when recording starts</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ANALYTICS SECTION -->
+      <section id="analytics-section" class="section hidden">
+        <div class="section-header">
+          <h2 class="section-title">
+            <span>📊</span>
+            <span>Meeting Analytics</span>
+          </h2>
+        </div>
+        <div class="section-body space-y-4">
+          <!-- Stats Grid -->
+          <div class="analytics-grid">
+            <div class="stat-card purple">
+              <div class="stat-value" id="analytics-duration">0m 0s</div>
+              <div class="stat-label">Duration</div>
+            </div>
+            <div class="stat-card blue">
+              <div class="stat-value" id="analytics-words">0</div>
+              <div class="stat-label">Total Words</div>
+            </div>
+            <div class="stat-card green">
+              <div class="stat-value" id="analytics-speakers">0</div>
+              <div class="stat-label">Speakers</div>
+            </div>
+          </div>
+
+          <!-- Speaker Distribution -->
+          <div>
+            <h3 style="font-size: var(--text-sm); font-weight: var(--font-medium); color: var(--neutral-900); margin-bottom: var(--space-2);">
+              Speaker Participation
+            </h3>
+            <div id="speaker-bars" class="space-y-2">
+              <!-- Speaker bars inserted by JS -->
+            </div>
+          </div>
+
+          <!-- Word Cloud -->
+          <div>
+            <h3 style="font-size: var(--text-sm); font-weight: var(--font-medium); color: var(--neutral-900); margin-bottom: var(--space-2);">
+              Top Words
+            </h3>
+            <div id="word-cloud" class="word-cloud">
+              <p style="font-size: var(--text-xs); color: var(--neutral-400);">Word cloud will appear as you speak...</p>
+            </div>
+          </div>
+
+          <!-- Most Active Speaker -->
+          <div id="most-active-container" class="hidden" style="padding: var(--space-3); background: linear-gradient(to right, var(--primary-50), var(--info-50)); border-radius: var(--radius-md);">
+            <div style="display: flex; align-items: center; gap: var(--space-2);">
+              <span style="font-size: var(--text-2xl);">🏆</span>
+              <div>
+                <div style="font-size: var(--text-xs); color: var(--neutral-600);">Most Active Speaker</div>
+                <div style="font-weight: var(--font-semibold); color: var(--neutral-900);" id="most-active-speaker">-</div>
+                <div style="font-size: var(--text-xs); color: var(--neutral-600);" id="most-active-stats">-</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SUMMARY SECTION -->
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">
+            <span>📊</span>
+            <span>Key Moments & Summary</span>
+          </h2>
+        </div>
+        <div class="section-body">
+          <div id="summary-container">
+            <div class="empty-state">
+              <p>Summaries will be generated automatically every 5 minutes</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ACTION ITEMS SECTION -->
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">
+            <span>✅</span>
+            <span>Action Items</span>
+          </h2>
+          <span class="badge badge-primary" id="action-count">0 items</span>
+        </div>
+        <div class="section-body">
+          <div id="action-items-container">
+            <div class="empty-state">
+              <p>Action items will be detected automatically</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MEETING IQ SECTION -->
+      <section class="section" id="meeting-iq-section" style="display: none;">
+        <div class="section-header">
+          <h2 class="section-title">
+            <span>🧠</span>
+            <span>Meeting IQ Score</span>
+          </h2>
+          <div class="meeting-type-badge" id="meeting-type-badge" style="display: none;">
+            <span id="meeting-type-badge-icon">📋</span>
+            <span id="meeting-type-badge-name">General</span>
+          </div>
+          <button id="toggle-iq-details" class="btn-icon" title="Toggle details">
+            <span>📊</span>
+          </button>
+        </div>
+        <div class="section-body">
+          <!-- Compact Score Widget -->
+          <div id="meeting-iq-widget" class="meeting-iq-widget">
+            <div class="iq-score-container">
+              <div class="iq-score" id="iq-score">--</div>
+              <div class="iq-trend" id="iq-trend"></div>
+            </div>
+            <div class="iq-rating" id="iq-rating">Calculating...</div>
+            <div class="iq-progress-bar">
+              <div class="iq-progress-fill" id="iq-progress" style="width: 0%"></div>
+            </div>
+            <div class="iq-insight" id="iq-insight">
+              <span class="insight-icon">💡</span>
+              <span id="iq-insight-text">Meeting IQ will be calculated after 2 minutes...</span>
+            </div>
+          </div>
+
+          <!-- Detailed Breakdown (Expandable) -->
+          <div id="meeting-iq-details" class="meeting-iq-details hidden">
+            <div class="iq-dimensions-grid">
+              <!-- Dimensions will be inserted by JS -->
+              <div class="iq-dimension">
+                <div class="iq-dimension-header">
+                  <span class="iq-dimension-icon">👥</span>
+                  <span class="iq-dimension-name">Participation Balance</span>
+                  <span class="iq-dimension-score" id="iq-participation-score">--</span>
+                </div>
+                <div class="iq-dimension-bar">
+                  <div class="iq-dimension-fill" id="iq-participation-bar" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <div class="iq-dimension">
+                <div class="iq-dimension-header">
+                  <span class="iq-dimension-icon">🎯</span>
+                  <span class="iq-dimension-name">Clarity & Focus</span>
+                  <span class="iq-dimension-score" id="iq-focus-score">--</span>
+                </div>
+                <div class="iq-dimension-bar">
+                  <div class="iq-dimension-fill" id="iq-focus-bar" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <div class="iq-dimension">
+                <div class="iq-dimension-header">
+                  <span class="iq-dimension-icon">✅</span>
+                  <span class="iq-dimension-name">Action-Oriented</span>
+                  <span class="iq-dimension-score" id="iq-actions-score">--</span>
+                </div>
+                <div class="iq-dimension-bar">
+                  <div class="iq-dimension-fill" id="iq-actions-bar" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <div class="iq-dimension">
+                <div class="iq-dimension-header">
+                  <span class="iq-dimension-icon">⚡</span>
+                  <span class="iq-dimension-name">Decision Velocity</span>
+                  <span class="iq-dimension-score" id="iq-decisions-score">--</span>
+                </div>
+                <div class="iq-dimension-bar">
+                  <div class="iq-dimension-fill" id="iq-decisions-bar" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <div class="iq-dimension">
+                <div class="iq-dimension-header">
+                  <span class="iq-dimension-icon">💬</span>
+                  <span class="iq-dimension-name">Engagement Quality</span>
+                  <span class="iq-dimension-score" id="iq-engagement-score">--</span>
+                </div>
+                <div class="iq-dimension-bar">
+                  <div class="iq-dimension-fill" id="iq-engagement-bar" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <div class="iq-dimension">
+                <div class="iq-dimension-header">
+                  <span class="iq-dimension-icon">⏱️</span>
+                  <span class="iq-dimension-name">Time Efficiency</span>
+                  <span class="iq-dimension-score" id="iq-efficiency-score">--</span>
+                </div>
+                <div class="iq-dimension-bar">
+                  <div class="iq-dimension-fill" id="iq-efficiency-bar" style="width: 0%"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Additional Insights -->
+            <div id="iq-additional-insights" class="iq-insights-list">
+              <!-- More insights will be inserted by JS -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- EXPORT SECTION -->
+      <section class="section" aria-labelledby="export-title">
+        <div class="section-header">
+          <h2 id="export-title" class="section-title">
+            <span aria-hidden="true">📤</span>
+            <span>Export & Share</span>
+          </h2>
+        </div>
+        <div class="section-body">
+          <div class="export-grid" role="group" aria-label="Export options">
+            <button id="export-txt" class="btn-export" disabled
+                    aria-label="Export transcript as text file"
+                    aria-describedby="export-txt-hint">
+              <span aria-hidden="true">📄</span>
+              <span>Export TXT</span>
+            </button>
+            <button id="export-md" class="btn-export" disabled
+                    aria-label="Export transcript as markdown file"
+                    aria-describedby="export-md-hint">
+              <span aria-hidden="true">📝</span>
+              <span>Export MD</span>
+            </button>
+            <button id="export-json" class="btn-export" disabled
+                    aria-label="Export transcript as JSON file"
+                    aria-describedby="export-json-hint">
+              <span aria-hidden="true">💾</span>
+              <span>Export JSON</span>
+            </button>
+            <button id="generate-email" class="btn-export primary" disabled
+                    aria-label="Generate email draft with meeting summary"
+                    aria-describedby="generate-email-hint">
+              <span aria-hidden="true">📧</span>
+              <span>Generate Email</span>
+            </button>
+          </div>
+          <!-- Screen reader hints -->
+          <div class="sr-only">
+            <span id="export-txt-hint">Exports meeting transcript and summary as plain text</span>
+            <span id="export-md-hint">Exports meeting content as markdown format with formatting</span>
+            <span id="export-json-hint">Exports raw meeting data as JSON for programmatic access</span>
+            <span id="generate-email-hint">Creates a formatted email draft ready to send to attendees</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- CALENDAR INTEGRATION SECTION -->
+      <section class="section" aria-labelledby="calendar-title">
+        <div class="section-header">
+          <h2 id="calendar-title" class="section-title">
+            <span aria-hidden="true">📅</span>
+            <span>Calendar Integration</span>
+          </h2>
+        </div>
+        <div class="section-body">
+          <div class="export-grid" role="group" aria-label="Calendar integration options">
+            <button id="calendar-followup" class="btn-export" disabled
+                    aria-label="Generate follow-up meeting calendar event"
+                    aria-describedby="calendar-followup-hint">
+              <span aria-hidden="true">📅</span>
+              <span>Add Follow-up Meeting</span>
+            </button>
+            <button id="calendar-notes" class="btn-export" disabled
+                    aria-label="Copy formatted notes for calendar event"
+                    aria-describedby="calendar-notes-hint">
+              <span aria-hidden="true">📝</span>
+              <span>Copy Notes for Calendar</span>
+            </button>
+            <button id="calendar-share" class="btn-export primary" disabled
+                    aria-label="Generate shareable transcript link"
+                    aria-describedby="calendar-share-hint">
+              <span aria-hidden="true">🔗</span>
+              <span>Generate Shareable Link</span>
+            </button>
+          </div>
+          <!-- Screen reader hints -->
+          <div class="sr-only">
+            <span id="calendar-followup-hint">Downloads .ics file to add follow-up meeting to your calendar</span>
+            <span id="calendar-notes-hint">Copies meeting notes to clipboard for pasting into calendar events</span>
+            <span id="calendar-share-hint">Creates a secure shareable link with 30-day expiration</span>
+          </div>
+        </div>
+      </section>
+            </button>
+            <button id="calendar-notes" class="btn-export" disabled>
+              <span>📝</span>
+              <span>Copy Notes for Calendar</span>
+            </button>
+            <button id="calendar-share" class="btn-export primary" disabled>
+              <span>🔗</span>
+              <span>Generate Shareable Link</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- CALENDAR MODAL -->
+  <div id="calendar-modal" class="modal" role="dialog" aria-labelledby="calendar-modal-title" aria-hidden="true">
+    <div class="modal-overlay"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="calendar-modal-title" class="modal-title"></h3>
+        <button class="modal-close" aria-label="Close modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="calendar-modal-body-content"></div>
+      </div>
+      <div class="modal-footer" id="calendar-modal-footer"></div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast-notification" class="toast" role="alert" aria-live="polite" aria-hidden="true">
+    <span id="toast-icon"></span>
+    <span id="toast-message"></span>
+  </div>
+
+  <!-- Animation System Scripts (loaded before main script) -->
+  <script type="module">
+    // Import animation modules
+    import { animationEngine } from '../utils/animation-engine.js';
+    import { meetingIQAnimations } from '../utils/meeting-iq-animations.js';
+    import { transcriptAnimations } from '../utils/transcript-animations.js';
+    import { actionItemAnimations } from '../utils/action-item-animations.js';
+    import { emailAnimations } from '../utils/email-animations.js';
+    import { navigationAnimations } from '../utils/navigation-animations.js';
+    
+    // Make animations globally available for sidepanel.js
+    window.animations = {
+      engine: animationEngine,
+      meetingIQ: meetingIQAnimations,
+      transcript: transcriptAnimations,
+      actionItem: actionItemAnimations,
+      email: emailAnimations,
+      navigation: navigationAnimations
+    };
+    
+    console.log('✨ Animation system loaded successfully');
+  </script>
+
+  <script src="sidepanel.js" type="module"></script>
+</body>
+</html>

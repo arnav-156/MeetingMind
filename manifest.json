@@ -1,0 +1,87 @@
+{
+  "manifest_version": 3,
+  "name": "MeetingMind",
+  "version": "1.0.0",
+  "description": "AI-powered meeting assistant with real-time transcription, smart summaries, and automated follow-ups - all processed locally on your device.",
+  "homepage_url": "https://arnav-156.github.io/MeetingMind/privacy-policy.html",
+  "trial_tokens": [
+    "AwGIpqF8jhkrtW/DdHdPByeI2/gMO4jXYV8Odo30Iwjb5ptzXLRQutfMnlFVEEG/1vTbDn66wyt16/SSwPI/fgoAAACAeyJvcmlnaW4iOiJjaHJvbWUtZXh0ZW5zaW9uOi8vbG1mZmdhZHBscGVlZ2ptY3BubmxqaGVkanBmZmtiaWEiLCJmZWF0dXJlIjoiQUlXcml0ZXJBUEkiLCJleHBpcnkiOjE3NzY3Mjk2MDAsImlzVGhpcmRQYXJ0eSI6dHJ1ZX0=",
+    "A/gGxS14kdT0/YvbQ9AXEMrgOdkshZ29NSk1XYUEgCAVBEJjxggaVYemoOeWmZhl9MZKdHPRemzkSu4C0tkX2QAAAACCeyJvcmlnaW4iOiJjaHJvbWUtZXh0ZW5zaW9uOi8vbG1mZmdhZHBscGVlZ2ptY3BubmxqaGVkanBmZmtiaWEiLCJmZWF0dXJlIjoiQUlSZXdyaXRlckFQSSIsImV4cGlyeSI6MTc3NjcyOTYwMCwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ==",
+    "A9QtHxdPrcK35QWXRkk3Ww6In9BF+tJmfPx5GdSD9h2O+7XaOyszV28ViBnSCQU2hG9vLH9mOBepnNSuSedA5gYAAACPeyJvcmlnaW4iOiJjaHJvbWUtZXh0ZW5zaW9uOi8vbG1mZmdhZHBscGVlZ2ptY3BubmxqaGVkanBmZmtiaWEiLCJmZWF0dXJlIjoiQUlQcm9tcHRBUElNdWx0aW1vZGFsSW5wdXQiLCJleHBpcnkiOjE3NzQzMTA0MDAsImlzVGhpcmRQYXJ0eSI6dHJ1ZX0="
+  ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "permissions": [
+    "tabCapture",
+    "activeTab",
+    "storage",
+    "sidePanel",
+    "scripting",
+    "offscreen",
+    "alarms",
+    "notifications"
+  ],
+  "host_permissions": [
+    "https://meet.google.com/*",
+    "https://*.zoom.us/*",
+    "https://teams.microsoft.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://meet.google.com/*",
+        "https://*.zoom.us/*",
+        "https://teams.microsoft.com/*"
+      ],
+      "js": ["content/content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    },
+    "default_title": "MeetingMind - Click to open"
+  },
+  "side_panel": {
+    "default_path": "sidepanel/sidepanel.html"
+  },
+  "commands": {
+    "open-side-panel": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+M",
+        "mac": "Command+Shift+M"
+      },
+      "description": "Open MeetingMind side panel"
+    },
+    "toggle-recording": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+R",
+        "mac": "Command+Shift+R"
+      },
+      "description": "Start/Stop recording"
+    },
+    "generate-summary": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+S",
+        "mac": "Command+Shift+S"
+      },
+      "description": "Generate meeting summary"
+    }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["icons/*.png"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

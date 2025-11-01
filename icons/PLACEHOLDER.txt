@@ -1,0 +1,10 @@
+⚠️ PLACEHOLDER ICONS
+
+The icon files (icon16.png, icon48.png, icon128.png) need to be created before loading the extension.
+
+For now, you can:
+1. Use the Python script create-icons.py to generate basic icons
+2. Download icon templates online
+3. Create them manually using design tools
+
+The extension will still work without icons, but Chrome will show warnings.
