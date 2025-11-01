@@ -79,8 +79,8 @@ Transform how you engage in virtual meetings with real-time transcription, intel
 ## 🎨 Screenshots
 
 ### Side Panel Interface
-- ![Side Panel Interface]](screenshot/01.11.2025_07.39.30_REC.png)
-- ![Meeting Mind features]](screenshot/01.11.2025_07.40.29_REC.png)
+- ![Side Panel Interface](screenshot/01.11.2025_07.39.30_REC.png)
+- ![Meeting Mind features](screenshot/01.11.2025_07.40.29_REC.png)
 
 ---
 
